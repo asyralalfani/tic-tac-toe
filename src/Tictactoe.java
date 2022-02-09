@@ -19,6 +19,8 @@ public class Tictactoe extends JFrame implements ActionListener {
     JLabel winO = new JLabel();
     JButton[] buttons = new JButton[9];
     boolean player;
+    int countWinX = 0;
+    int countWinO = 0;
 
     //constructor
     Tictactoe() {
@@ -47,7 +49,7 @@ public class Tictactoe extends JFrame implements ActionListener {
         title.setFont(new Font("Segoe Print", Font.BOLD,30));
         title.setPreferredSize(new Dimension(0, 100));
         title.setHorizontalAlignment(JLabel.CENTER);
-        title.setText("Match Begins in 4 Seconds...");
+        title.setText("The Match Will Start Soon");
         title.setOpaque(true);
 
         headerPanel.setLayout(new BorderLayout());
@@ -188,6 +190,11 @@ public class Tictactoe extends JFrame implements ActionListener {
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setAlignmentX(CENTER_ALIGNMENT);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                startGame();
+            }
+        } );
         panel1.add(button);
 
         button1.setFont(new Font("Segoe Print", Font.PLAIN, 16));
@@ -197,6 +204,11 @@ public class Tictactoe extends JFrame implements ActionListener {
         button1.setBorderPainted(false);
         button1.setFocusPainted(false);
         button1.setAlignmentX(CENTER_ALIGNMENT);
+        button1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        } );
         panel1.add(button1);
 
         panel.add(panel1);
@@ -207,11 +219,24 @@ public class Tictactoe extends JFrame implements ActionListener {
         frame.add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    public void resetButton() {
+        for (int i = 0; i < 9; i++) {
+            buttons[i].setText("");
+            buttons[i].setBackground(Color.decode("#313552"));
+            buttons[i].setEnabled(false);
+        }
+    }
+
     public void startGame() {
+        resetButton();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        for (int i = 0; i < 9; i++) {
+            buttons[i].setEnabled(true);
         }
 
         if (random.nextInt(2) == 0) {
@@ -255,6 +280,14 @@ public class Tictactoe extends JFrame implements ActionListener {
             buttons[i].setEnabled(false);
         }
         title.setText("Player " + type +  " Wins");
+
+        if (type.equals("X")) {
+            countWinX += 1;
+            winX.setText(String.valueOf(countWinX));
+        } else {
+            countWinO += 1;
+            winO.setText(String.valueOf(countWinO));
+        }
     }
 
     @Override
